@@ -7,7 +7,7 @@ const namespace = 'my-expenses';
 
 const devSettings = {
   namespace,
-  ur: '',
+  uri: 'http://localhost:3000',
 };
 
 const prodSettings = {
