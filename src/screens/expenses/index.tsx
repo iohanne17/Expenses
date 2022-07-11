@@ -99,4 +99,3 @@ export default function Component({}) {
     </Transitioning.View>
   );
 }
-//amount category, id, comment date id index mervhant receipts, user{obj}

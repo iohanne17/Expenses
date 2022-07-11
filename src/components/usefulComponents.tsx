@@ -14,9 +14,12 @@ import {
   StyleProp,
   TextStyle,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import theme from '@Config/theme';
 import globalStyles from '@Config/styles';
+
+const IMG_SIZE = 40;
 
 interface LayoutProps {
   style?: any;
@@ -39,7 +42,6 @@ interface SpacerProps {
 export interface ItemProps {
   item: any;
   onItemPress: (item: any) => void;
-  index: number;
 }
 
 export interface EmptyListProps {
@@ -142,12 +144,29 @@ const EmptyList = ({title = 'Your expense list is empty'}: EmptyListProps) => {
   );
 };
 
-const ItemComponent = ({item, onItemPress, index}: ItemProps) => {
+const ItemComponent = ({item, onItemPress}: ItemProps) => {
+  const {user, comment, date, category, id, merchant, index} = item;
+  console.log('--', user);
   return (
     <Pressable
       onPress={() => onItemPress && onItemPress(item)}
-      key={`${index}${item.id}`}>
-      <View />
+      key={`${index}${id}`}>
+      <View style={{flexDirection: 'row'}}>
+        <View style={styles.imageWrapper}>
+          <Image
+            source={{
+              uri: 'https://source.unsplash.com/user/c_v_r',
+            }}
+            style={[styles.image]}
+          />
+        </View>
+        <View>
+          <Text>{`Purchased from ${merchant}`}</Text>
+          <Text>{date}</Text>
+          <Text>{comment}</Text>
+          <Text>{category}</Text>
+        </View>
+      </View>
     </Pressable>
   );
 };
@@ -170,6 +189,19 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: 'black',
     fontWeight: 'bold',
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    width: undefined,
+    height: undefined,
+    resizeMode: 'cover',
+  },
+  imageWrapper: {
+    height: IMG_SIZE,
+    width: IMG_SIZE,
+    borderRadius: IMG_SIZE / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

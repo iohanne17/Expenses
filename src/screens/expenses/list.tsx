@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import theme from '@Config/theme';
 
 const ListScreen = ({onChangePage, data = []}: IndexProps) => {
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(data);
   const [searchInput, setSearchInput] = useState('');
   const navigation = useNavigation() as any;
   const debouncedSearchInput = useDebounce(searchInput, 10);
@@ -73,9 +73,9 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
 
   return (
     <Layout style={styles.mainBody}>
-      <View style={[styles.mainBody, {marginTop: 80, paddingHorizontal: 16}]}>
+      <View style={[styles.mainBody]}>
         <FlatList
-          data={[]}
+          data={filteredData}
           extraData={{filteredData}}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => `${item?.id} + "-todo`}
@@ -90,17 +90,8 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
               </View>
             );
           }}
-          ListEmptyComponent={() => {
-            return <EmptyList />;
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <ItemComponent
-                item={item}
-                index={index}
-                onItemPress={onItemPress}
-              />
-            );
+          renderItem={({item}) => {
+            return <ItemComponent item={item} onItemPress={onItemPress} />;
           }}
         />
       </View>
