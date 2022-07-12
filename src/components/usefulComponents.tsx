@@ -18,8 +18,9 @@ import {
 } from 'react-native';
 import theme from '@Config/theme';
 import globalStyles from '@Config/styles';
+import {format, parseISO} from 'date-fns';
 
-const IMG_SIZE = 40;
+const IMG_SIZE = 50;
 
 interface LayoutProps {
   style?: any;
@@ -145,13 +146,13 @@ const EmptyList = ({title = 'Your expense list is empty'}: EmptyListProps) => {
 };
 
 const ItemComponent = ({item, onItemPress}: ItemProps) => {
-  const {user, comment, date, category, id, merchant, index} = item;
-  console.log('--', user);
+  const {user, comment, date, id, merchant, index, amount} = item;
   return (
     <Pressable
+      style={styles.itemPressable}
       onPress={() => onItemPress && onItemPress(item)}
       key={`${index}${id}`}>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.itemPressableInner}>
         <View style={styles.imageWrapper}>
           <Image
             source={{
@@ -160,11 +161,21 @@ const ItemComponent = ({item, onItemPress}: ItemProps) => {
             style={[styles.image]}
           />
         </View>
-        <View>
-          <Text>{`Purchased from ${merchant}`}</Text>
-          <Text>{date}</Text>
-          <Text>{comment}</Text>
-          <Text>{category}</Text>
+        <Spacer width={10} />
+        <View style={{flex: 1}}>
+          <Text>
+            {user.first} {user.last}
+          </Text>
+          <Text style={styles.comment}>{comment}</Text>
+          <Spacer height={10} />
+          <Text style={styles.merchant}>{`Sold by ${merchant}`}</Text>
+        </View>
+        <View style={styles.amountContainer}>
+          <Text
+            style={styles.amount}>{`${amount.currency}${amount.value}`}</Text>
+          <Text style={styles.date}>
+            {format(parseISO(date), 'MMM d').toUpperCase()}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -191,9 +202,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
+    height: IMG_SIZE,
+    width: IMG_SIZE,
+    borderRadius: IMG_SIZE / 2,
     resizeMode: 'cover',
   },
   imageWrapper: {
@@ -202,6 +213,58 @@ const styles = StyleSheet.create({
     borderRadius: IMG_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  itemPressable: {
+    marginVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: theme.colors.borderGray,
+    paddingBottom: 16,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 18,
+    textTransform: 'capitalize',
+  },
+  merchant: {
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 12,
+    color: theme.colors.black,
+    textTransform: 'capitalize',
+  },
+  comment: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 18,
+    color: theme.colors.textGray,
+    textTransform: 'none',
+  },
+  amount: {
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 12,
+    color: theme.colors.black,
+    textTransform: 'uppercase',
+  },
+  itemPressableInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  amountContainer: {
+    alignSelf: 'flex-start',
+    paddingTop: 4,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 58,
+  },
+  date: {
+    fontSize: 10,
+    fontWeight: '400',
+    lineHeight: 18,
+    color: theme.colors.textGray,
+    textTransform: 'uppercase',
   },
 });
 

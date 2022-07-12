@@ -79,7 +79,6 @@ export default function Component({}) {
   if (isLoading) {
     return <Loading />;
   }
-  console.log('---', data);
 
   return (
     <Transitioning.View

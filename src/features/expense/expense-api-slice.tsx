@@ -21,9 +21,9 @@ export const expenseSliceApi = createApi({
     }),
     updateExpense: build.mutation({
       query: ({id, comment}) => ({
-        url: `/expenses/:${id}`,
+        url: `/expenses/${id}`,
         method: 'POST',
-        body: JSON.stringify({comment}),
+        body: {comment},
       }),
     }),
     updateWithReceipt: build.mutation({

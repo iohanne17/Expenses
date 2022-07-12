@@ -28,36 +28,27 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
     });
   }, [navigation]);
 
-  const getOptions = useCallback(
-    ({searchInput: input = ''}) => {
-      const fuse = new Fuse(data, {
-        keys: ['name', 'id'],
-        includeScore: true,
-        useExtendedSearch: true,
-      });
+  const getOptions = useCallback((input: any) => {
+    const fuse = new Fuse(filteredData, {
+      keys: ['user.first', 'user.last', 'id', 'merchant'],
+      includeScore: true,
+      useExtendedSearch: true,
+    });
 
-      if (_.isEmpty(input)) {
-        setFilteredData(data);
-        return;
-      }
+    if (_.isEmpty(input)) {
+      setFilteredData(data);
+      return;
+    }
 
-      const res = fuse.search(`'${input}`).map(elem => elem.item); // items that include the particular phrase
-      setFilteredData(res);
-    },
-    [data],
-  );
-
-  // useEffect(() => {
-  //   setFilteredData(data);
-  // }, [data]);
+    const res = fuse.search(`'${input}`).map(elem => elem.item); // items that include the particular phrase
+    setFilteredData(res);
+  }, []);
 
   useEffect(() => {
     if (debouncedSearchInput) {
-      getOptions({searchInput: debouncedSearchInput});
-    } else {
-      setFilteredData(data);
+      getOptions(debouncedSearchInput);
     }
-  }, [debouncedSearchInput, getOptions, data]);
+  }, [debouncedSearchInput, getOptions]);
 
   const onInputChanged = (val: string) => {
     setSearchInput(val);
@@ -67,12 +58,8 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
     onChangePage && onChangePage('detail', {item});
   };
 
-  if (!filteredData || _.isEmpty(filteredData)) {
-    return <EmptyList />;
-  }
-
   return (
-    <Layout style={styles.mainBody}>
+    <Layout>
       <View style={[styles.mainBody]}>
         <FlatList
           data={filteredData}
@@ -81,14 +68,28 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
           keyExtractor={item => `${item?.id} + "-todo`}
           ListHeaderComponent={() => {
             return (
-              <View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: theme.colors.backgroundGray,
+                  borderWidth: StyleSheet.hairlineWidth,
+                  borderColor: theme.colors.borderColor,
+                  flexDirection: 'row',
+                  borderRadius: 25,
+                  paddingLeft: 10,
+                }}>
                 <TextInput
                   value={searchInput}
                   onChangeText={onInputChanged}
-                  style={{flex: 1, height: 48}}
+                  placeholder="Search"
+                  autoFocus={true}
+                  style={styles.textInput}
                 />
               </View>
             );
+          }}
+          ListEmptyComponent={() => {
+            return <EmptyList />;
           }}
           renderItem={({item}) => {
             return <ItemComponent item={item} onItemPress={onItemPress} />;
@@ -105,57 +106,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     flex: 1,
     backgroundColor: theme.colors.white,
+    paddingHorizontal: theme.layouts.horizontalPadding,
   },
-  title: {
-    fontSize: 17,
-    fontWeight: '600',
-    lineHeight: 18,
-    textTransform: 'capitalize',
-    color: 'white',
-  },
-  description: {
-    fontSize: 14,
-    fontWeight: '400',
-    textTransform: 'none',
-    color: 'white',
-  },
-  price: {
-    fontSize: 14,
-    fontWeight: '400',
-    textTransform: 'none',
-    color: 'white',
-    lineHeight: 18,
-  },
-  total: {
-    fontSize: 16,
-    fontWeight: '800',
-    textTransform: 'none',
-    color: 'white',
-  },
-  item: {
-    justifyContent: 'center',
-    // alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'white',
-    padding: 10,
-    marginBottom: 8,
-  },
-  image: {
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
-    resizeMode: 'cover',
-    marginRight: 6,
-  },
-  pressable: {
-    backgroundColor: 'white',
-    borderRadius: 21,
-    padding: 4,
-    marginRight: 10,
-  },
-  pressableText: {
-    fontSize: 12,
-    color: 'black',
-    fontWeight: 'bold',
+  textInput: {
+    flex: 1,
+    height: 48,
   },
 });

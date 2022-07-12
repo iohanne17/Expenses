@@ -367,7 +367,6 @@ const layoutStyles = StyleSheet.create({
   page: {
     flex: 1,
     paddingHorizontal: theme.layouts.horizontalPadding,
-    // paddingVertical: theme.layouts.verticalPadding,
     backgroundColor: theme.colors.background,
   },
   scrollPage: {
