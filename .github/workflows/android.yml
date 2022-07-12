@@ -1,0 +1,46 @@
+name: Sendbox App workflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-android:
+    name: Build Local
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository on Github VM
+        uses: actions/checkout@v2
+
+      - name: Run Node in VM
+        uses: actions/setup-node@master
+            
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Install Fastlane
+        run: |
+          gem install fastlane
+      - name: Build Mobile App
+        run: |
+          cd android
+          fastlane release_local
+      - name: check for changes
+        run: git status
+      - name: stage changed files
+        run: git add .
+      - name: commit changed files
+        run: git commit -m "updating all files"
+      - name: fetch from main
+        run: git fetch origin main
+      - name: push code to master
+        run: git push origin HEAD:main
+
+
+      

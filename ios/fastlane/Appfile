@@ -1,0 +1,21 @@
+# app_identifier(ENV["DEVELOPER_APP_IDENTIFIER"])
+# apple_id(ENV["FASTLANE_APPLE_ID"])
+# itc_team_id(ENV["APP_STORE_CONNECT_TEAM_ID"])
+# team_id(ENV["DEVELOPER_PORTAL_TEAM_ID"])
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
+
+
+# 1. APP_STORE_CONNECT_TEAM_ID - the ID of your App Store Connect team in you’re in multiple teams
+# 2. DEVELOPER_APP_ID - in App Store Connect, go to the app -> App Information -> Scroll down to the General Information section of your app and look for Apple ID.
+# 3. DEVELOPER_APP_IDENTIFIER - your app’s bundle identifier
+# 4. DEVELOPER_PORTAL_TEAM_ID - the ID of your Developer Portal team if you’re in multiple teams
+# 5. FASTLANE_APPLE_ID - the Apple ID or developer email you use to manage the app
+# 6. GIT_AUTHORIZATION - <YOUR_GITUSERNAME>:<YOUR_PERSONAL_ACCESS_TOKEN>, eg. joshuadeguzman:mysecretkeyyoudontwanttoknow
+# 7. MATCH_PASSWORD - the passphrase that you assigned when initializing match, will be used for decrypting the certificates and provisioning profiles
+# 8. PROVISIONING_PROFILE_SPECIFIER - match AppStore <YOUR_APP_BUNDLE_IDENTIFIER>, eg. match AppStore com.domain.blabla.demo.
+# 9. TEMP_KEYCHAIN_USER & TEMP_KEYCHAIN_PASSWORD - assign a temp keychain user and password for your workflow
+# 10. APPLE_KEY_ID — App Store Connect API Key 🔺Key ID
+# 11. APPLE_ISSUER_ID — App Store Connect API Key 🔺Issuer ID
+# 12. APPLE_KEY_CONTENT — App Store Connect API Key 🔺 Key file or Key content of .p8,

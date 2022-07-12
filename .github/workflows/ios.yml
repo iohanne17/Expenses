@@ -1,0 +1,29 @@
+name: Sendbox App workflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build-ios:
+    name: Deploy to Appstore
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Install Fresh packages
+        run: |
+          rm -rf node_modules package-lock.json && yarn install
+          
+      - name: Clean Pods
+        run: | 
+          cd ios && pod deintegrate && pod install --repo-update && cd ..
+
+      - name: Deploy to Appstore via Fastlane
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: build
+          subdirectory: 'ios'
