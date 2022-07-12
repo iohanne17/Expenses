@@ -15,6 +15,7 @@ import {
   TextStyle,
   SafeAreaView,
   Image,
+  ImageStyle,
 } from 'react-native';
 import theme from '@Config/theme';
 import globalStyles from '@Config/styles';
@@ -43,10 +44,20 @@ interface SpacerProps {
 export interface ItemProps {
   item: any;
   onItemPress: (item: any) => void;
+  customPressableStyle?: StyleProp<ViewStyle>;
+  customeInnerViewStyle?: StyleProp<ViewStyle>;
+  customImageWrapper?: StyleProp<ViewStyle>;
+  customImageStyle?: StyleProp<ImageStyle>;
+  customCommentStyle?: TextStyle;
+  customMerchantStyle?: TextStyle;
+  customAmountContainerStyle?: StyleProp<ViewStyle>;
+  customAmountStyle?: StyleProp<TextStyle>;
 }
 
 export interface EmptyListProps {
   title?: string;
+  customEmptyView?: ViewStyle;
+  customEmptyText?: TextStyle;
 }
 
 const Layout = ({style, children}: LayoutProps) => {
@@ -132,33 +143,43 @@ const ErrorMessage = ({}) => {
   );
 };
 
-const EmptyList = ({title = 'Your expense list is empty'}: EmptyListProps) => {
+const EmptyList = ({
+  title = 'Your expense list is empty',
+  customEmptyView,
+  customEmptyText,
+}: EmptyListProps) => {
   return (
-    <View
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-      }}>
-      <Text style={styles.empty}>{title}</Text>
+    <View style={[styles.emptyView, customEmptyView]}>
+      <Text style={[styles.empty, customEmptyText]}>{title}</Text>
     </View>
   );
 };
 
-const ItemComponent = ({item, onItemPress}: ItemProps) => {
+const ItemComponent = ({
+  item,
+  onItemPress,
+  customPressableStyle,
+  customeInnerViewStyle,
+  customImageWrapper,
+  customImageStyle,
+  customCommentStyle,
+  customMerchantStyle,
+  customAmountContainerStyle,
+  customAmountStyle,
+}: ItemProps) => {
   const {user, comment, date, id, merchant, index, amount} = item;
   return (
     <Pressable
-      style={styles.itemPressable}
+      style={[styles.itemPressable, customPressableStyle]}
       onPress={() => onItemPress && onItemPress(item)}
       key={`${index}${id}`}>
-      <View style={styles.itemPressableInner}>
-        <View style={styles.imageWrapper}>
+      <View style={[styles.itemPressableInner, customeInnerViewStyle]}>
+        <View style={[styles.imageWrapper, customImageWrapper]}>
           <Image
             source={{
               uri: 'https://source.unsplash.com/user/c_v_r',
             }}
-            style={[styles.image]}
+            style={[styles.image, customImageStyle]}
           />
         </View>
         <Spacer width={10} />
@@ -166,13 +187,20 @@ const ItemComponent = ({item, onItemPress}: ItemProps) => {
           <Text>
             {user.first} {user.last}
           </Text>
-          <Text style={styles.comment}>{comment}</Text>
+          <Text style={[styles.comment, customCommentStyle]}>{comment}</Text>
           <Spacer height={10} />
-          <Text style={styles.merchant}>{`Sold by ${merchant}`}</Text>
-        </View>
-        <View style={styles.amountContainer}>
           <Text
-            style={styles.amount}>{`${amount.currency}${amount.value}`}</Text>
+            style={[
+              styles.merchant,
+              customMerchantStyle,
+            ]}>{`Sold by ${merchant}`}</Text>
+        </View>
+        <View style={[styles.amountContainer, customAmountContainerStyle]}>
+          <Text
+            style={[
+              styles.amount,
+              customAmountStyle,
+            ]}>{`${amount.currency}${amount.value}`}</Text>
           <Text style={styles.date}>
             {format(parseISO(date), 'MMM d').toUpperCase()}
           </Text>
@@ -183,6 +211,11 @@ const ItemComponent = ({item, onItemPress}: ItemProps) => {
 };
 
 const styles = StyleSheet.create({
+  emptyView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
   root: {
     flex: 1,
     backgroundColor: 'white',

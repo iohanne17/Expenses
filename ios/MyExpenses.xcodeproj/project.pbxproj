@@ -64,6 +64,7 @@
 		0455F654287CFECA00944D2E /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		0455F655287CFECA00944D2E /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		0455F656287CFECA00944D2E /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		04E2DB73287D7B6600E65BB4 /* MyExpenses.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MyExpenses.entitlements; path = MyExpenses/MyExpenses.entitlements; sourceTree = "<group>"; };
 		04F9819A287C54550078A627 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04F9819C287C861C0078A627 /* MyExpenses-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyExpenses-Bridging-Header.h"; sourceTree = "<group>"; };
 		04F9819D287C861D0078A627 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -147,6 +148,7 @@
 		13B07FAE1A68108700A75B9A /* MyExpenses */ = {
 			isa = PBXGroup;
 			children = (
+				04E2DB73287D7B6600E65BB4 /* MyExpenses.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				04F9819A287C54550078A627 /* GoogleService-Info.plist */,
@@ -548,6 +550,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MyExpenses/MyExpenses.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MyExpenses/Info.plist;
@@ -575,6 +578,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MyExpenses/MyExpenses.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = MyExpenses/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {Layout, Spacer} from '@Components/usefulComponents';
 import {IndexProps} from './index';
@@ -20,6 +21,7 @@ import {useUpdateExpenseMutation} from '@Features/expense/expense-api-slice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {AuthContext} from 'src/providers/mainProvider';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 interface ItemBoxProps {
   title: string;
   description: string;
@@ -42,6 +44,7 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
   const height = useKeyboard();
   const [updateExpense] = useUpdateExpenseMutation();
   const [loading, setLoading] = useState(false);
+  const [uploading, setuploading] = useState(false);
   const {item} = initialValues;
   const [itemValue, setItem] = useState(item);
   const {t} = useContext(AuthContext) as any;
@@ -89,6 +92,30 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
     }
   };
 
+  const handleChoosePhoto = async () => {
+    const result = await launchImageLibrary({
+      // includeBase64: true,
+      mediaType: 'photo',
+      quality: 0.5,
+    });
+    if (result.assets) {
+      setuploading(true);
+      const response = createFormData(result?.assets[0]);
+      console.log('--', response);
+    }
+  };
+
+  const createFormData = (photo: Asset) => {
+    const data = new FormData();
+    if (photo) {
+      const uri: any =
+        Platform.OS === 'ios' ? photo?.uri?.replace('file://', '') : photo?.uri;
+      data.append('receipt', uri);
+    }
+    setuploading(false);
+    return data;
+  };
+
   const {user, comment, id, merchant, amount} = itemValue && itemValue;
 
   return (
@@ -125,8 +152,14 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
             onPress={() => setVisible(true)}>
             <Text style={styles.total}>{t('comment')}</Text>
           </Pressable>
-          <Pressable style={[styles.pressable, styles.right]}>
-            <Text style={[styles.total, styles.rightText]}> {t('upload')}</Text>
+          <Pressable
+            disabled={uploading}
+            style={[styles.pressable, styles.right]}
+            onPress={() => handleChoosePhoto()}>
+            <Text style={[styles.total, styles.rightText]}>
+              {' '}
+              {uploading ? 'Uploading' : t('upload')}
+            </Text>
           </Pressable>
         </View>
       </View>
