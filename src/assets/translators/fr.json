@@ -1,0 +1,14 @@
+{
+    "translation": {
+      "welcome":"Bienvenue",
+      "select":"Veuillez sélectionner votre langue",
+      "header": "Belle imagerie à Munich",
+      "description": "La description",
+      "description_text":"Cet article peut être acheté de plein gré. Il est dûment donné par le propriétaire du magasin.",
+      "merchant":"Marchande",
+      "contact":"Contact",
+      "comment":"Commentaire",
+      "upload": "Télécharger le reçu", 
+      "send":"Envoyer"
+    }
+  }

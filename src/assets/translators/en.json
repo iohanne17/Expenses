@@ -1,0 +1,14 @@
+{
+    "translation": {
+      "welcome":"Welcome",
+      "select":"Please select your language",
+      "header": "Beautiful Imagery at Munich",
+      "description": "Description",
+      "description_text":"This item can be purchased by free will. It is duely give by the store owner.",
+      "merchant":"Merchant",
+      "contact":"Contact",
+      "comment":"Comment",
+      "upload": "Upload Receipt", 
+      "send":"Send"
+    }
+  }

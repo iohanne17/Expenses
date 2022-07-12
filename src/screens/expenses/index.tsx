@@ -3,6 +3,7 @@ import React, {useRef, useState} from 'react';
 import Comment from './comment';
 import Detail from './detail';
 import List from './list';
+import Language from './language';
 import {Transition, Transitioning} from 'react-native-reanimated';
 import globalStyles from '@Config/styles';
 import {Loading} from '@Components/usefulComponents';
@@ -20,12 +21,15 @@ export interface IndexProps {
 export default function Component({}) {
   const [pageData, setPageData] = useState({});
   const ref = useRef() as any;
-  const [currentPage, setCurrentPage] = useState('main');
+  const [currentPage, setCurrentPage] = useState('lang');
   const {data, isLoading} = useFetchExpensesQuery({}) as any;
 
   let PageComponent: any;
 
   switch (currentPage) {
+    case 'lang':
+      PageComponent = Language;
+      break;
     case 'main':
       PageComponent = List;
       break;

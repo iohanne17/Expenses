@@ -1,6 +1,8 @@
 import React, {createContext, useCallback, useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Loading} from '@Components/usefulComponents';
+import '../assets/translators/i18n';
+import {useTranslation} from 'react-i18next';
 
 const AuthContext = createContext<unknown>(undefined);
 
@@ -14,6 +16,10 @@ interface AuthContextProps {
   isLoading: boolean;
   userToken: string | undefined;
   userData: any;
+  currentLanguage: string;
+  changeLanguage: (a: any) => void;
+  t: any;
+  i18n: any;
 }
 
 const AppProvider = ({children}: Props) => {
@@ -23,6 +29,15 @@ const AppProvider = ({children}: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setuserToken] = useState<string | undefined>(undefined);
   const [userData, setUserData] = useState<any>();
+  const {t, i18n} = useTranslation();
+  const [currentLanguage, setLanguage] = useState('en');
+  const changeLanguage = (value: string) => {
+    i18n
+      .changeLanguage(value)
+      .then(() => setLanguage(value))
+      .catch(err => console.log(err));
+  };
+  console.log('selected langhuage===>', i18n.language);
 
   // bootstrap method to check if the user is authenticated
   const bootStrapAsync = useCallback(async () => {
@@ -54,6 +69,10 @@ const AppProvider = ({children}: Props) => {
     isLoading,
     userToken,
     userData,
+    currentLanguage,
+    changeLanguage,
+    t,
+    i18n,
   };
 
   if (isLoading) {

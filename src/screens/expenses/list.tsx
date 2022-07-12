@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
-import {StyleSheet, View, FlatList, TextInput} from 'react-native';
+import {StyleSheet, View, FlatList, TextInput, Pressable} from 'react-native';
 import {Layout, EmptyList, ItemComponent} from '@Components/usefulComponents';
 import {IndexProps} from './index';
 import {useDebounce} from '@Libs/hooks';
@@ -9,6 +9,7 @@ import Fuse from 'fuse.js';
 import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import theme from '@Config/theme';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ListScreen = ({onChangePage, data = []}: IndexProps) => {
   const [filteredData, setFilteredData] = useState(data);
@@ -18,15 +19,23 @@ const ListScreen = ({onChangePage, data = []}: IndexProps) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShadowVisible: false, // applied here
-      headerBackTitleVisible: false,
-      headerStyle: {
-        backgroundColor: theme.colors.white,
+      headerLeft: () => {
+        return (
+          <Pressable
+            style={{paddingRight: 16}}
+            onPress={() => {
+              onChangePage && onChangePage('lang', {});
+            }}>
+            <MaterialCommunityIcons
+              size={24}
+              name={'chevron-left'}
+              color={theme.colors.black}
+            />
+          </Pressable>
+        );
       },
-      title: '',
-      headerLeft: null,
     });
-  }, [navigation]);
+  }, [navigation, onChangePage]);
 
   const getOptions = useCallback((input: any) => {
     const fuse = new Fuse(filteredData, {
