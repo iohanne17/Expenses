@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
 
-import Comment from './comment';
 import Detail from './detail';
 import List from './list';
 import Language from './language';
@@ -35,9 +34,6 @@ export default function Component({}) {
       break;
     case 'detail':
       PageComponent = Detail;
-      break;
-    case 'comment':
-      PageComponent = Comment;
       break;
     default:
       PageComponent = List;
@@ -86,6 +82,7 @@ export default function Component({}) {
 
   return (
     <Transitioning.View
+      accessibilityLabel={'login_screen'}
       ref={ref}
       style={globalStyles.layoutStyles.wrapper}
       transition={transition}>

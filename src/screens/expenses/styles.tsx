@@ -2,10 +2,20 @@ import {StyleSheet} from 'react-native';
 import theme from '@Config/theme';
 
 const styles = StyleSheet.create({
+  receiptImageView: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+  },
+  receiptImage: {
+    width: 80,
+    height: 80,
+    marginHorizontal: 4,
+  },
   inputWrapper: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.textGray,
-    borderRadius: 25,
+    backgroundColor: theme.colors.borderGray,
+    borderRadius: 10,
     paddingLeft: 8,
   },
   mainBody: {
@@ -28,7 +38,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    height: 48,
+    height: 80,
+    textAlignVertical: 'top',
   },
   comment: {
     fontSize: 16,

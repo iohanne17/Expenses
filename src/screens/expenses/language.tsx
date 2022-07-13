@@ -37,15 +37,20 @@ const LanguageScreen = ({onChangePage}: IndexProps) => {
 
   return (
     <Layout>
-      <View style={[styles.mainBody]}>
+      <View
+        style={[styles.mainBody]}
+        testID="email"
+        accessibilityLabel={'email'}>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <Text style={styles.title}> {t('select')}</Text>
           <Text
+            testID={'lang_button'}
             style={
               styles.descriptionText
             }>{`Your current lanugage is ${lang}`}</Text>
           <View style={styles.pressableContainer}>
             <Pressable
+              accessibilityLabel={'press_me'}
               style={({pressed}) => [
                 styles.pressable,
                 {opacity: pressed ? 0.5 : 1},
@@ -54,6 +59,7 @@ const LanguageScreen = ({onChangePage}: IndexProps) => {
               <Text style={styles.total}>Change Language</Text>
             </Pressable>
             <Pressable
+              testID={'UniqueId204'}
               style={[styles.pressable, styles.right]}
               onPress={() => onChangePage && onChangePage('main')}>
               <Text style={[styles.total, styles.rightText]}> Proceed</Text>

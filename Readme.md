@@ -38,7 +38,7 @@ React-Navigation: This is the standard library that is recommended for react-nat
 react-native-reanimated: This is a standard animation library for react-native. I am using this to animate my custom navigation process.
 ```
 ## Most Interesting
-The most interesting part was the react-native-extension and it was also the hardest part to implement because it was my first time doing something like that, it is a nice experience to have. I am most proud of the push notification implementation because there are ways to customize the push notification to the extreme.
+The most difficult part was the react-native-extension and it was also the interesting part to implement because it was my first time doing something like that though it is not completed, it is a nice experience to have. I am most proud of the detox e2e testing framework, I have only worked with purely jest.
 
 ## Contributing
 Please make sure to run the local API following the API setup and installation guidelines.

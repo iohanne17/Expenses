@@ -11,17 +11,23 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ScrollView,
 } from 'react-native';
 import {Layout, Spacer} from '@Components/usefulComponents';
 import {IndexProps} from './index';
 import {useNavigation} from '@react-navigation/native';
 import theme from '@Config/theme';
 import {useKeyboard} from '@Libs/hooks';
-import {useUpdateExpenseMutation} from '@Features/expense/expense-api-slice';
+import {
+  useUpdateExpenseMutation,
+  useUpdateWithReceiptMutation,
+} from '@Features/expense/expense-api-slice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {AuthContext} from 'src/providers/mainProvider';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Settings from '@Config/settings';
+
 interface ItemBoxProps {
   title: string;
   description: string;
@@ -48,6 +54,7 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
   const {item} = initialValues;
   const [itemValue, setItem] = useState(item);
   const {t} = useContext(AuthContext) as any;
+  const [updateWithReceipt] = useUpdateWithReceiptMutation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -93,30 +100,44 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
   };
 
   const handleChoosePhoto = async () => {
-    const result = await launchImageLibrary({
-      // includeBase64: true,
-      mediaType: 'photo',
-      quality: 0.5,
-    });
-    if (result.assets) {
-      setuploading(true);
-      const response = createFormData(result?.assets[0]);
-      console.log('--', response);
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        quality: 0.5,
+      });
+      if (result.assets) {
+        setuploading(true);
+        const photo: any = result?.assets[0];
+        console.log('-----inside photo picket', photo);
+        const res = createFormData(photo);
+        const receiptResult: any = await updateWithReceipt({id, res});
+        setuploading(false);
+        console.log('--------------------------------', receiptResult);
+        setItem(receiptResult.data);
+      }
+    } catch (e) {
+      setuploading(false);
     }
   };
 
-  const createFormData = (photo: Asset) => {
-    const data = new FormData();
-    if (photo) {
-      const uri: any =
-        Platform.OS === 'ios' ? photo?.uri?.replace('file://', '') : photo?.uri;
-      data.append('receipt', uri);
-    }
-    setuploading(false);
+  const createFormData = (photo: {
+    uri: any;
+    fileName: string;
+    type: string;
+  }) => {
+    const data = new FormData() as any;
+    data.append('receipt', {
+      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+      name: photo.fileName,
+      type: photo.type,
+    });
     return data;
   };
 
-  const {user, comment, id, merchant, amount} = itemValue && itemValue;
+  const {user, comment, id, merchant, amount, receipts} =
+    itemValue && itemValue;
+
+  console.log('-->', receipts);
 
   return (
     <Layout>
@@ -143,6 +164,21 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
         {comment.length > 0 && (
           <ItemBox title={t('comment')} description={comment} />
         )}
+        <ScrollView horizontal>
+          {receipts &&
+            receipts.map(
+              (receipt: any, index: React.Key | null | undefined) => {
+                return (
+                  <View key={index} style={styles.receiptImage}>
+                    <Image
+                      style={styles.receiptImageView}
+                      source={{uri: `${Settings.uri}${receipt.url}`}}
+                    />
+                  </View>
+                );
+              },
+            )}
+        </ScrollView>
         <View style={styles.pressableContainer}>
           <Pressable
             style={({pressed}) => [
@@ -185,6 +221,8 @@ const DetailScreen = ({onChangePage, initialValues}: IndexProps) => {
                   value={input}
                   onChangeText={val => setInput(val)}
                   style={styles.textInput}
+                  textAlignVertical={'top'}
+                  multiline={true}
                 />
               </View>
               <Spacer height={5} />

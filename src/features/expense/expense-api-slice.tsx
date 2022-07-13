@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Settings from '@Config/settings';
-
 export interface ExpensesProps {
   limit?: number;
   offset?: number;
@@ -27,11 +26,14 @@ export const expenseSliceApi = createApi({
       }),
     }),
     updateWithReceipt: build.mutation({
-      query: ({id, formData}) => {
+      query: ({id, res}) => {
         return {
-          url: `/expenses/:${id}/receipts`,
+          url: `/expenses/${id}/receipts`,
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
           method: 'POST',
-          body: formData,
+          body: res,
         };
       },
     }),
