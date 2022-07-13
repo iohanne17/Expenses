@@ -1,4 +1,4 @@
-name: Sendbox App workflow
+name: App workflow
 
 on:
   push:
