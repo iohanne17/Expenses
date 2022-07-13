@@ -8,10 +8,15 @@ jobs:
   build-android:
     name: Build Local
     runs-on: macos-latest
-
+     
     steps:
       - name: Checkout Repository on Github VM
         uses: actions/checkout@v2
+
+      - name: Java Setup Package
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
 
       - name: Run Node in VM
         uses: actions/setup-node@master
